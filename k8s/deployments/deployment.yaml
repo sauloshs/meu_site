@@ -17,3 +17,38 @@ spec:
           image: sauloshs/site:latest
           ports:
             - containerPort: 8080
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysite-service
+spec:
+  selector:
+    app: mysite
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP
+              
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mysite-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: site.saulo.io
+      http: 
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mysite-service
+                port:
+                  number: 8080
