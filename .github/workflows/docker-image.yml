@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:  # Permite rodar manualmente o workflow
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
